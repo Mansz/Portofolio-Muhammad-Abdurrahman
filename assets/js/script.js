@@ -134,6 +134,196 @@ for (let i = 0; i < formInputs.length; i++) {
   });
 }
 
+// Enhanced form submission with success/error messages
+if (form) {
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    // Add loading state
+    formBtn.classList.add("loading");
+    formBtn.disabled = true;
+    
+    // Simulate form submission (replace with actual form handling)
+    setTimeout(() => {
+      // Remove loading state
+      formBtn.classList.remove("loading");
+      formBtn.disabled = false;
+      
+      // Show success message
+      showFormMessage("Message sent successfully! Thank you for contacting me.", "success");
+      
+      // Reset form
+      form.reset();
+      formBtn.setAttribute("disabled", "");
+    }, 2000);
+  });
+}
+
+// Function to show form messages
+function showFormMessage(message, type) {
+  const messageElement = document.getElementById("form-message");
+  const messageText = document.getElementById("message-text");
+  
+  if (messageElement && messageText) {
+    messageText.textContent = message;
+    messageElement.className = `form-message ${type}`;
+    messageElement.style.display = "block";
+    
+    // Hide message after 5 seconds
+    setTimeout(() => {
+      messageElement.style.display = "none";
+    }, 5000);
+  }
+}
+
+// Counter animation for stats
+function animateCounters() {
+  const counters = document.querySelectorAll('[data-count]');
+  
+  counters.forEach(counter => {
+    const target = parseInt(counter.getAttribute('data-count'));
+    const duration = 2000; // 2 seconds
+    const increment = target / (duration / 16); // 60fps
+    let current = 0;
+    
+    const updateCounter = () => {
+      current += increment;
+      if (current < target) {
+        counter.textContent = Math.floor(current);
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.textContent = target;
+      }
+    };
+    
+    updateCounter();
+  });
+}
+
+// Animate skill progress bars
+function animateSkillBars() {
+  const skillBars = document.querySelectorAll('.skill-progress-fill');
+  
+  skillBars.forEach(bar => {
+    const progress = bar.getAttribute('data-progress');
+    if (progress) {
+      setTimeout(() => {
+        bar.style.width = progress + '%';
+      }, 500);
+    }
+  });
+}
+
+// Intersection Observer for animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      if (entry.target.classList.contains('about-stats')) {
+        animateCounters();
+      }
+      if (entry.target.classList.contains('skills-list')) {
+        animateSkillBars();
+      }
+    }
+  });
+}, observerOptions);
+
+// Observe elements when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  const statsSection = document.querySelector('.about-stats');
+  const skillsSection = document.querySelector('.skills-list');
+  
+  if (statsSection) observer.observe(statsSection);
+  if (skillsSection) observer.observe(skillsSection);
+});
+
+// Enhanced project hover effects
+document.addEventListener('DOMContentLoaded', () => {
+  const projectItems = document.querySelectorAll('.project-item');
+  
+  projectItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      item.style.transform = 'translateY(-5px)';
+    });
+    
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = 'translateY(0)';
+    });
+  });
+});
+
+// Smooth scrolling for navigation
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelectorAll('[data-nav-link]');
+  
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      // Add smooth transition effect
+      const targetPage = link.textContent.toLowerCase();
+      const targetElement = document.querySelector(`[data-page="${targetPage}"]`);
+      
+      if (targetElement) {
+        // Add fade effect
+        targetElement.style.opacity = '0';
+        setTimeout(() => {
+          targetElement.style.opacity = '1';
+        }, 150);
+      }
+    });
+  });
+});
+
+// Enhanced typing effect for name (optional)
+function typeWriter(element, text, speed = 100) {
+  let i = 0;
+  element.textContent = '';
+  
+  function type() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+  
+  type();
+}
+
+// Initialize typing effect on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const nameElements = document.querySelectorAll('.name');
+  if (nameElements.length > 0) {
+    // Remove typing cursor after animation
+    setTimeout(() => {
+      nameElements.forEach(el => {
+        el.style.position = 'static';
+      });
+    }, 3000);
+  }
+});
+
+// Add loading animation to buttons
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('button');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      if (!this.disabled && !this.classList.contains('loading')) {
+        // Add subtle click effect
+        this.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          this.style.transform = 'scale(1)';
+        }, 150);
+      }
+    });
+  });
+});
+
 
 
 // page navigation variables
